@@ -32,7 +32,7 @@ namespace ApplicationInsightsForwarderWorker
         }
 
         [Function("ForwardAI")]
-        public async Task Run([EventHubTrigger("appinsights", Connection = "EHConnection")] EventData[] events, ILogger log)
+        public async Task Run([EventHubTrigger("appinsights", Connection = "EHConnection")] EventData[] events)
         {
             var exceptions = new List<Exception>();
 
@@ -51,10 +51,6 @@ namespace ApplicationInsightsForwarderWorker
                     var content = new ApplicationInsights2OTLP.ExportRequestContent(exportTraceServiceRequest);
 
                     var res = await _client.PostAsync(_otlpEndpoint, content);
-                    if (!res.IsSuccessStatusCode)
-                    {
-                        log.LogError("Couldn't send span " + (res.StatusCode) + "\n" + messageBody);
-                    }
 
                     await Task.Yield();
                 }
