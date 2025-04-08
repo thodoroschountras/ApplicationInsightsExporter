@@ -53,7 +53,6 @@ namespace ApplicationInsightsForwarderWorker
                     var res = await _client.PostAsync(_otlpEndpoint, content);
                     if (!res.IsSuccessStatusCode)
                     {
-                        log.LogError("Couldn't send span " + (res.StatusCode) + "\n" + messageBody);
                         _logger.LogError("Couldn't send span " + (res.StatusCode) + "\n" + messageBody);
                     }
 
